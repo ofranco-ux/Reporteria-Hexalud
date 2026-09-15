@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard AHT Servicios</title>
+    <title>Dashboard AHT Hexalud</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -109,7 +109,7 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div>
-                    <h1 class="text-2xl font-bold text-white">Dashboard <span class="text-teal-400">AHT Servicios</span></h1>
+                    <h1 class="text-2xl font-bold text-white">Dashboard <span class="text-teal-400">AHT Hexalud</span></h1>
                     <p class="text-xs text-slate-400">Métricas Ejecutivas de Llamadas y Chat</p>
                 </div>
             </div>
@@ -118,7 +118,7 @@
         <!-- Loading Overlay -->
         <div id="loading-overlay" class="absolute inset-0 bg-white/80 z-50 hidden flex-col items-center justify-center">
             <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-teal-600 mb-4"></div>
-            <h3 class="text-lg font-semibold text-slate-700" id="loading-title">Procesando Base de Datos...</h3>
+            <h3 class="text-lg font-semibold text-slate-700" id="loading-title">Procesando Base de Datos Hexalud...</h3>
             <p class="text-sm text-slate-500" id="loading-subtitle">Aplicando reglas de mapeo HC y limpieza de datos.</p>
         </div>
 
@@ -258,7 +258,7 @@
         let filteredChats = [];
         let headCountMap = {}; 
         
-        // Filter State (Para los Filtros Chidos)
+        // Filter State (Filtros Chidos)
         let currentFilters = {
             mes: 'Todos',
             dia: 'Todos',
@@ -314,7 +314,7 @@
             return m.isValid() ? m : moment(val);
         };
 
-        // Procesamiento del Excel
+        // Procesamiento del Excel Hexalud
         const processExcelData = (workbook) => {
             headCountMap = {};
             if (workbook.SheetNames.includes('HC')) {
@@ -409,30 +409,31 @@
                 });
             }
 
-            // Al inicio, forzamos aplicar los filtros para que todo arranque sincronizado
             applyFilters();
         };
 
-        // Render Fetching
+        // Render Fetching Configurado para Hexalud
         window.addEventListener('DOMContentLoaded', async () => {
             try {
                 overlay.classList.remove('hidden');
                 overlay.classList.add('flex');
-                loadingTitle.innerText = "Buscando base de datos en Render...";
+                loadingTitle.innerText = "Buscando base de datos AHT Hexalud...";
                 loadingSubtitle.innerText = "Esto puede tomar unos segundos.";
                 
-                let response = await fetch('./AHT Servicios.xlsx');
+                let response = await fetch('./AHT Hexalud.xlsx');
                 if (!response.ok) {
                     response = await fetch('./datos.xlsx');
                 }
                 
                 if (response.ok) {
                     const contentType = response.headers.get("content-type");
-                    if (contentType && contentType.includes("text/html")) throw new Error("Render no encontró el Excel.");
+                    if (contentType && contentType.includes("text/html")) throw new Error("Render no encontró el Excel Hexalud.");
 
                     const arrayBuffer = await response.arrayBuffer();
                     const workbook = XLSX.read(arrayBuffer, { type: 'array', cellDates: true });
                     processExcelData(workbook);
+                } else {
+                    console.warn("Archivo AHT Hexalud.xlsx no encontrado.");
                 }
             } catch (error) {
                 console.error("No se pudo cargar el archivo automáticamente:", error);
@@ -531,7 +532,7 @@
         });
 
         // -------------------------------------------------------------
-        // EXPORTACIÓN DE DATOS (NUEVO BOTÓN)
+        // EXPORTACIÓN DE DATOS (HEXALUD)
         // -------------------------------------------------------------
         document.getElementById('btn-exportar').addEventListener('click', () => {
             if(filteredCalls.length === 0 && filteredChats.length === 0) return alert("No hay datos para exportar.");
@@ -556,7 +557,7 @@
                 XLSX.utils.book_append_sheet(wb, wsChats, "Chats_Filtrados");
             }
             
-            XLSX.writeFile(wb, "Reporte_AHT_Exportado.xlsx");
+            XLSX.writeFile(wb, "Reporte_AHT_Hexalud_Exportado.xlsx");
         });
 
         // -------------------------------------------------------------
@@ -751,4 +752,3 @@
     </script>
 </body>
 </html>
-
